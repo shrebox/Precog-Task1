@@ -1,7 +1,7 @@
 # PreCog-Task
 
   <h2>1. Data extraction using the data.py script:</h2>
-  Using the Twitter API with Tweepy wrapper, data has been extracted for particular hashtags. I have  collected 10001 tweets for Mumbai Rains and 12400 for Delhi/NCR Pollution. 
+  Using the Twitter API with Tweepy wrapper, data has been extracted for particular hashtags. I have  collected 10001 tweets for Mumbai Rains and 12400 for Delhi/NCR Pollution-exported as json file in Data directory from mongodb. 
   
   To use the data script, in terminal run the following command:
  <b> $ python data.py</b>
