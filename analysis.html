@@ -1,0 +1,186 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+      google.charts.load('current', {'packages':['corechart','bar']});
+
+      google.charts.setOnLoadCallback(top10hashtags_delhi);
+
+      google.charts.setOnLoadCallback(top10hashtags_mumbai);
+
+       google.charts.setOnLoadCallback(MumbaipieChart);
+
+       google.charts.setOnLoadCallback(DelhiPieChart);
+
+       google.charts.setOnLoadCallback(Mumbaioripie);
+
+       google.charts.setOnLoadCallback(Delhioripie);
+
+       function MumbaipieChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['User Location', 'Count'],
+          ['Mumbai',     634],
+          ['Non Mumbai',      9367]
+        ]);
+
+        var options = {
+          title: 'Activity of Non-Mumbai People',
+           is3D: true,
+          };
+
+        var chart = new google.visualization.PieChart(document.getElementById('Mumbaipiechart'));
+
+        chart.draw(data, options);
+      }
+
+      function DelhiPieChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['User Location', 'Count'],
+          ['Delhi',     1709],
+          ['Non Delhi',      10691]
+
+        ]);
+
+        var options = {
+          title: 'Activity of Non-Delhi People',
+           is3D: true,
+          };
+
+        var chart = new google.visualization.PieChart(document.getElementById('DelhiPieChart'));
+
+        chart.draw(data, options);
+      }
+
+      function Mumbaioripie() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Type of Tweet', 'Count'],
+          ['Retweet',      9047],
+          ['Original',     954]
+        ]);
+
+        var options = {
+          title: 'Original vs Retweet Count: Mumbai',
+           is3D: true,
+          };
+
+        var chart = new google.visualization.PieChart(document.getElementById('Mumbaioripie'));
+
+        chart.draw(data, options);
+      }
+
+      function Delhioripie() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Type of Tweet', 'Count'],
+          ['Retweet',      8144],
+          ['Original',     4256]
+
+        ]);
+
+        var options = {
+          title: 'Original vs Retweet Count: Delhi',
+           is3D: true,
+          };
+
+        var chart = new google.visualization.PieChart(document.getElementById('Delhioripie'));
+
+        chart.draw(data, options);
+      }
+
+
+
+  
+      // Callback that draws the pie chart for Sarah's pizza.
+      function top10hashtags_delhi() {
+
+        // Create the data table for Sarah's pizza.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Videos');
+        data.addColumn('number', 'Likes');
+        data.addRows([
+          ['DelhiSmog', 5842],
+          ['INDvSL', 3237],
+          ['INDvsSL', 2499],
+          ['smog', 2005],
+          ['Smog', 1959],
+           ['Delhipollution', 1296],
+          ['Delhi', 1020],
+           ['SmogInDelhi', 984],
+          ['Kohli', 705],
+          ['अंधश्रद्धाभक्ति_खतरा_ए_जान', 603],
+          ['pollution',472]
+        ]);
+
+
+        // Set options for Sarah's pie chart.
+        var options = {title:'Top 10 Hashtags: Delhi',
+                       width:900,
+                       height:500};
+
+        // Instantiate and draw the chart for Sarah's pizza.
+        var chart = new google.visualization.BarChart(document.getElementById('top10hashtags_delhi'));
+        chart.draw(data, options);
+      }
+
+        function top10hashtags_mumbai() {
+
+        // Create the data table for Sarah's pizza.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Videos');
+        data.addColumn('number', 'Likes');
+        data.addRows([
+          ['CycloneOckhi', 8772],
+          ['MumbaiRains', 1013],
+          ['अंधश्रद्धाभक्ति_खतरा_ए_जान', 478],
+          ['OckhiCyclone', 204],
+          ['OpSahayam', 202],
+           ['Jayalalithaa', 192],
+          ['CycloneOckh', 184],
+           ['HADR', 181],
+          ['Gujarat', 145],
+          ['Ashes', 135],
+          ['SAR',129]
+        ]);
+
+        // Set options for Sarah's pie chart.
+        var options = {title:'Top 10 Hashtags: Mumbai',
+                       width:900,
+                       height:500};
+
+        // Instantiate and draw the chart for Sarah's pizza.
+        var chart = new google.visualization.BarChart(document.getElementById('top10hashtags_mumbai'));
+        chart.draw(data, options);
+      }
+
+    </script>
+  </head>
+  <body>
+    <!--Table and divs that hold the pie charts-->
+    <table class="columns">
+    <tr>
+      <H1 align="center">Twitter Task 1</H1>
+    </tr>
+     <tr>
+      <td><div id="DelhiPieChart" style="width: 900px; height: 500px;"></div></td>
+    <!--   </tr>
+      <tr> -->
+      <td><div id="Mumbaipiechart" style="width: 900px; height: 500px;"></div></td>
+      </tr>
+       <tr>
+      <td><div id="Delhioripie" style="width: 900px; height: 500px;"></div></td>
+    <!--   </tr>
+      <tr> -->
+      <td><div id="Mumbaioripie" style="width: 900px; height: 500px;"></div></td>
+      </tr>
+       <tr>
+        <td><div id="top10hashtags_delhi" style="border: 1px solid #ccc"></div></td>
+        <td><div id="top10hashtags_mumbai" style="border: 1px solid #ccc"></div></td>
+      </tr>
+
+    </table>
+  </body>
+</html>
