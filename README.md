@@ -9,5 +9,5 @@
 
   <h2>2. Webapp for the data analysis:</h2>
   Data analysis script: "my2.py" is stored in the Codes directory which is further analysed using various visualizations using Google Charts.
-  Webapp is hosted on: <b>https://youtube-analysis-precogtask.herokuapp.com/</b>
+  Webapp is hosted on: <b>https://precog-task1-shrebox.herokuapp.com/ </b>
 
