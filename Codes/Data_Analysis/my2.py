@@ -157,5 +157,96 @@ for i in range(len(xcor)):
 
 print locdic
 
+# CDF favorite count of original tweets------------------------------------
+
+favcount = []
+for tweet in collection:
+	try:
+		if tweet['retweeted_status'] != None:
+			favcount.append(tweet['retweeted_status']['favorite_count'])
+	except:
+		favcount.append(tweet['favorite_count'])
+
+data_sorted = np.sort(favcount)
+
+print data_sorted
+
+p = 1. * np.arange(len(favcount)) / (len(favcount) - 1)
+
+print len(p)
+
+plt.title('Favorite counts CDF on original Tweets: Mumbai')
+plt.plot(data_sorted, p)
+plt.xlabel('Favorite Count')
+plt.ylabel('CDF')
+plt.show()
+
+# network graph ---------------------------------------------
+
+# 1. retweeted_status if ture => check the user id ==> id - retweeted_status[userid]
+# 2. in reply to userid true ==> id - inreplytouserid
+# 3. check entities['user_mentions'] if true ==> id - user_mentions id
+
+import networkx as nx
+
+G=nx.Graph()
+networkdic = {}
+origc = 0
+for tweet in collection:
+	try:
+		if tweet['retweeted_status'] != None:
+			G.add_edge(tweet['retweeted_status']['user']['id'],tweet['user']['id'])
+	except:
+		origc+=1
+
+	if tweet['in_reply_to_user_id'] != None:
+		G.add_edge(tweet['in_reply_to_user_id'],tweet['user']['id'])
+
+	for i in range(len(tweet['entities']['user_mentions'])):
+		G.add_edge(tweet['entities']['user_mentions'][i]['id'],tweet['user']['id'])
+
+	# try:
+	# 	if tweet['retweeted_status'] != None:
+	# 		if tweet['retweeted_status']['user']['id'] not in networkdic:
+	# 			networkdic[tweet['retweeted_status']['user']['id']] = [tweet['user']['id']]
+	# 		else:
+	# 			networkdic[tweet['retweeted_status']['user']['id']].append(tweet['user']['id'])
+	# 		# if tweet['user']['id'] not in networkdic:
+	# 		# 	networkdic[tweet['user']['id']] = [tweet['retweeted_status']['user']['id']]
+	# 		# else:
+	# 		# 	networkdic[tweet['user']['id']].append(tweet['retweeted_status']['user']['id'])
+	# except:
+	# 	origc+=1
+
+	# if tweet['in_reply_to_user_id'] != None:
+	# 	if tweet['in_reply_to_user_id'] not in networkdic:
+	# 		networkdic[tweet['in_reply_to_user_id']] = [tweet['user']['id']]
+	# 	else:
+	# 		networkdic[tweet['in_reply_to_user_id']].append(tweet['user']['id'])
+	# 	# if tweet['user']['id'] not in networkdic:
+	# 	# 	networkdic[tweet['user']['id']] = [tweet['in_reply_to_user_id']]
+	# 	# else:
+	# 	# 	networkdic[tweet['user']['id']].append(tweet['in_reply_to_user_id'])
+
+	# for i in range(len(tweet['entities']['user_mentions'])):
+	# 	if tweet['entities']['user_mentions'][i]['id'] not in networkdic:
+	# 		networkdic[tweet['entities']['user_mentions'][i]['id']] = [tweet['user']['id']]
+	# 	else:
+	# 		networkdic[tweet['entities']['user_mentions'][i]['id']].append(tweet['user']['id'])
+	# 	# if tweet['user']['id'] not in networkdic:
+	# 	# 	networkdic[tweet['user']['id']] = [tweet['entities']['user_mentions'][i]['id']]
+	# 	# else:
+	# 	# 	networkdic[tweet['user']['id']].append(tweet['entities']['user_mentions'][i]['id'])
+
+
+nx.draw(G,with_labels=False)
+plt.title("Delhi Network")
+plt.savefig('delhi_network.eps', format='eps', dpi=1000)
+plt.show()
+
+# for key,value in networkdic.iteritems():
+# 	print key, value[0]
+
+# print len(networkdic)
 
 		
