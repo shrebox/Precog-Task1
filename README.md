@@ -7,13 +7,13 @@
  <b> $ python data.py</b>
   * You have put Twitter API keys for extraction.
 
-  <h2>2. Partwise Data Explaination(according to the hosted webapp):</h2>
-  1. Network Graph is made using the networkx tool in pyhton and later visualized using matplotlib. Replies, retweets and mentions are considered while building graphs. <br>
-  2. Geoplotting for the location of tweets based on geo-coordinates, user-timezone and user-location has been visualized using CartDB with frequency of tweets occuring from a particular location. <br>
-  3. Pie chart using Google charts to distinguish the percent of tweets the non-Delhi and non-Mumbai people did about the Delhi and Mumbai incidents. <br>
-  4. Donut Chart using Google charts to show the range of entities used in tweets like text, image, video and GIFs and their ratio in overall tweets. <br>
-  5. Pie chart using Google charts to show the ratio of original tweets vs the retweeted tweets. <br>
-  6. Top 10 hashtags used for both Delhi and Mumbai data visualized using Google Charts. <br>
+  <h2>2. Analysis (according to the hosted webapp):</h2>
+  1. Network Graph is made using the networkx tool in pyhton and later visualized using matplotlib. Replies, retweets and mentions are considered for graphs. <br>
+  2. Geoplotting for the location of tweets based on geo-coordinates, user-timezone and user-location has been visualized using CartDB with frequency values of tweets occuring from a particular location. <br>
+  3. The percent of tweets the non-Delhi and non-Mumbai people tweeting about the Delhi and Mumbai incidents visualized using Pie Charts by Google Charts. <br>
+  4. The type of media used in tweets like text, image, video and GIFs and their ratio in overall tweets visualized using Donut Chart by Google Charts. <br>
+  5. The ratio of original tweets vs the retweeted tweets visualized using Pie Charts by Google Charts. <br>
+  6. Top 10 hashtags used for both Delhi and Mumbai data visualized using Bar Charts by Google Charts. <br>
   7. CDF for the favourite count on the original tweets visualized using matplotlib. Point on the graph defines the probability of tweets on the y-axis will have at-most favourite count defined on x-axis. 
 
   <h2>3. Webapp for the data analysis:</h2>
