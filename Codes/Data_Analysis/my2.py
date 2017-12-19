@@ -13,6 +13,7 @@ import re
 import operator
 from operator import itemgetter, attrgetter, methodcaller
 from geopy.geocoders import Nominatim
+import matplotlib.patches as mpatches
 
 client = MongoClient()
 db = client.precog
@@ -112,68 +113,68 @@ collection = db.delhi_collection.find()
 
 # geo check ----------------------------
 
-from geojson import Point
-import csv
+# from geojson import Point
+# import csv
 
-geolocator = Nominatim()
-xcor = []
-ycor = []
-geocount = 0
-tzcount = 0
-locount = 0
-locdic = {}
-pool=0
-writedic = {}
-# writedic['name'] = "geojson";
-abhicount=5
-for tweet in collection:
-	# if(abhicount>0):
-	if tweet['geo'] != None:
-		xcor.append(tweet['geo']['coordinates'][0])
-		ycor.append(tweet['geo']['coordinates'][1])
-		geocount+=1
+# geolocator = Nominatim()
+# xcor = []
+# ycor = []
+# geocount = 0
+# tzcount = 0
+# locount = 0
+# locdic = {}
+# pool=0
+# writedic = {}
+# # writedic['name'] = "geojson";
+# abhicount=5
+# for tweet in collection:
+# 	# if(abhicount>0):
+# 	if tweet['geo'] != None:
+# 		xcor.append(tweet['geo']['coordinates'][0])
+# 		ycor.append(tweet['geo']['coordinates'][1])
+# 		geocount+=1
 
-	elif tweet['user']['location'] != None and tweet['user']['location']!="":
-		print tweet['user']['location']
-		try:
-			if tweet['user']['location'].lower() not in locdic:
-				locdic[str(tweet['user']['location'].lower())] = 0
-			locdic[str(tweet['user']['location'].lower())] += 1
-		except:
-			pool+=1
-		locount+=1
+# 	elif tweet['user']['location'] != None and tweet['user']['location']!="":
+# 		print tweet['user']['location']
+# 		try:
+# 			if tweet['user']['location'].lower() not in locdic:
+# 				locdic[str(tweet['user']['location'].lower())] = 0
+# 			locdic[str(tweet['user']['location'].lower())] += 1
+# 		except:
+# 			pool+=1
+# 		locount+=1
 
-	elif tweet['user']['time_zone'] != None:
-		print tweet['user']['time_zone']
-		try:
-			if tweet['user']['time_zone']!="":
-				if tweet['user']['time_zone'].lower() not in locdic:
-					locdic[str(tweet['user']['time_zone'].lower())] = 0
-				locdic[str(tweet['user']['time_zone'].lower())] += 1
-		except:
-			pool+=1
-		tzcount+=1
+# 	elif tweet['user']['time_zone'] != None:
+# 		print tweet['user']['time_zone']
+# 		try:
+# 			if tweet['user']['time_zone']!="":
+# 				if tweet['user']['time_zone'].lower() not in locdic:
+# 					locdic[str(tweet['user']['time_zone'].lower())] = 0
+# 				locdic[str(tweet['user']['time_zone'].lower())] += 1
+# 		except:
+# 			pool+=1
+# 		tzcount+=1
 
-print geocount, locount,tzcount
+# print geocount, locount,tzcount
 
-for i in range(len(xcor)):
-	location = geolocator.reverse((xcor[i], ycor[i]))
-	try:
-		if location.address not in locdic:
-			locdic[str(location.address).lower()] = 0
-		locdic[str(location.address).lower()] += 1
-	except:
-		pool+=1
+# for i in range(len(xcor)):
+# 	location = geolocator.reverse((xcor[i], ycor[i]))
+# 	try:
+# 		if location.address not in locdic:
+# 			locdic[str(location.address).lower()] = 0
+# 		locdic[str(location.address).lower()] += 1
+# 	except:
+# 		pool+=1
 
 
-print len(locdic)
+# print len(locdic)
 
-with open('delhi1.csv','wb') as cf:
-	writer = csv.writer(cf)
-	for key in locdic.keys():
-		city = key
-		frequency = locdic[key]
-		writer.writerow([city,frequency])
+# with open('delhi1.csv','wb') as cf:
+# 	writer = csv.writer(cf)
+# 	for key in locdic.keys():
+# 		city = key
+# 		frequency = locdic[key]
+# 		writer.writerow([city,frequency])
 
 
 # CDF favorite count of original tweets------------------------------------
@@ -214,7 +215,7 @@ with open('delhi1.csv','wb') as cf:
 # jsondic = {}
 # # with open('delnet.json', 'w') as f:
 # for tweet in collection:
-# 	# try:
+# 	try:
 # 	# 	if tweet['retweeted_status'] != None:
 # 	# 		# G.add_edge(tweet['retweeted_status']['user']['id'],tweet['user']['id'])
 # 	# 		if "node" not in jsondic:
@@ -310,6 +311,77 @@ with open('delhi1.csv','wb') as cf:
 # # 	print key, value[0]
 
 # # print len(networkdic)
+
+import networkx as nx
+
+G=nx.Graph()
+networkdic = {}
+origc = 0
+color_map = []
+for tweet in collection:
+	try:
+		if tweet['retweeted_status'] != None:
+			G.add_edge(tweet['retweeted_status']['user']['id'],tweet['user']['id'])
+			color_map.append('blue')
+	except:
+		origc+=1
+
+	if tweet['in_reply_to_user_id'] != None:
+		G.add_edge(tweet['in_reply_to_user_id'],tweet['user']['id'])
+		color_map.append('green')
+
+	for i in range(len(tweet['entities']['user_mentions'])):
+		G.add_edge(tweet['entities']['user_mentions'][i]['id'],tweet['user']['id'])
+		color_map.append('red')
+
+	# try:
+	# 	if tweet['retweeted_status'] != None:
+	# 		if tweet['retweeted_status']['user']['id'] not in networkdic:
+	# 			networkdic[tweet['retweeted_status']['user']['id']] = [tweet['user']['id']]
+	# 		else:
+	# 			networkdic[tweet['retweeted_status']['user']['id']].append(tweet['user']['id'])
+	# 		# if tweet['user']['id'] not in networkdic:
+	# 		# 	networkdic[tweet['user']['id']] = [tweet['retweeted_status']['user']['id']]
+	# 		# else:
+	# 		# 	networkdic[tweet['user']['id']].append(tweet['retweeted_status']['user']['id'])
+	# except:
+	# 	origc+=1
+
+	# if tweet['in_reply_to_user_id'] != None:
+	# 	if tweet['in_reply_to_user_id'] not in networkdic:
+	# 		networkdic[tweet['in_reply_to_user_id']] = [tweet['user']['id']]
+	# 	else:
+	# 		networkdic[tweet['in_reply_to_user_id']].append(tweet['user']['id'])
+	# 	# if tweet['user']['id'] not in networkdic:
+	# 	# 	networkdic[tweet['user']['id']] = [tweet['in_reply_to_user_id']]
+	# 	# else:
+	# 	# 	networkdic[tweet['user']['id']].append(tweet['in_reply_to_user_id'])
+
+	# for i in range(len(tweet['entities']['user_mentions'])):
+	# 	if tweet['entities']['user_mentions'][i]['id'] not in networkdic:
+	# 		networkdic[tweet['entities']['user_mentions'][i]['id']] = [tweet['user']['id']]
+	# 	else:
+	# 		networkdic[tweet['entities']['user_mentions'][i]['id']].append(tweet['user']['id'])
+	# 	# if tweet['user']['id'] not in networkdic:
+	# 	# 	networkdic[tweet['user']['id']] = [tweet['entities']['user_mentions'][i]['id']]
+	# 	# else:
+	# 	# 	networkdic[tweet['user']['id']].append(tweet['entities']['user_mentions'][i]['id'])
+
+
+nx.draw(G,node_color=color_map,with_labels=False)
+plt.title("Mumbai Network")
+# plt.savefig('delhi_network.eps', format='eps', dpi=1000)
+blue_patch = mpatches.Patch(color='blue', label='Retweets')
+green_patch = mpatches.Patch(color='green', label='Replies')
+red_patch = mpatches.Patch(color='red', label='Mentions')
+plt.legend(handles=[blue_patch,green_patch,red_patch])
+plt.show()
+
+# for key,value in networkdic.iteritems():
+# 	print key, value[0]
+
+# print len(networkdic)
+
 
 
 		
